@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 
 library work;
 
-entity conv_code_gen is
+entity convolutional_code_generator is
 	port (
 		clock : in std_ulogic; -- external clock
 		reset : in std_ulogic; -- reset, asynchronous, active high
@@ -12,9 +12,9 @@ entity conv_code_gen is
 		c_out : out std_ulogic
 	);
 
-end conv_code_gen;
+end convolutional_code_generator;
 
-architecture beh of conv_code_gen is
+architecture beh of convolutional_code_generator is
 	
 	component ShiftRegister is
 		generic (
@@ -39,23 +39,39 @@ architecture beh of conv_code_gen is
 
 begin
 	a_register: ShiftRegister
+	generic map (
+		size => a_reg_size
+	)
 	port map (
-		clock => clock;
-		reset => reset;
-		input_bit => a_in;
-		output_bit => a_reg_out
+		clock => clock,
+		reset => reset,
+		input_bit => a_in,
+		output_bits => a_reg_out
 	);
 
 	c_register: ShiftRegister
+	generic map (
+		size => c_reg_size
+	)
 	port map (
-		clock => clock;
-		reset => reset;
-		input_bit => c_out_signal;
-		output_bit => c_reg_out
+		clock => clock,
+		reset => reset,
+		input_bit => c_out_signal,
+		output_bits => c_reg_out
 	);
 
-	a_out <= a_reg_out(0);
-	c_out_signal <= a_reg_out(0) xor a_reg_out(3) xor a_reg_out(4) xor c_reg_out(8) xor c_reg_out(10);
+	proc: process (reset, a_reg_out)
+	begin
+		if (reset = '1') then
+			a_out <= '0';
+			c_out_signal <= '0';
+		else
+			-- Generate convolutional codes
+			a_out <= a_reg_out(0);
+			c_out_signal <= a_reg_out(0) xor a_reg_out(3) xor a_reg_out(4) xor c_reg_out(8) xor c_reg_out(10);
+		end if;
+	end process;
+
 	c_out <= c_out_signal;
 
 end beh;
