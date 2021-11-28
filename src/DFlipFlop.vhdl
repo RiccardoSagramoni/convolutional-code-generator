@@ -4,8 +4,6 @@ use ieee.std_logic_1164.all;
 library work;
 
 entity DFlipFlop is
-	generic( N : natural := 8);
-		
 	port( 
 		clock : in std_ulogic; -- external clock
 		reset : in std_ulogic; -- reset, asynchronous, active high

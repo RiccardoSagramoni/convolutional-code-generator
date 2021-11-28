@@ -28,13 +28,24 @@ architecture beh of convolutional_code_generator is
 			output_bits : out std_ulogic_vector (size-1 downto 0)
 		);
 	end component ShiftRegister;
+
+	component DFlipFlop is
+		port( 
+			clock : in std_ulogic; -- external clock
+			reset : in std_ulogic; -- reset, asynchronous, active high
+			d : in std_ulogic; -- input bit
+			q : out std_ulogic -- ouput bit
+		);
+				
+	end component DFlipFlop;
 	
 	constant a_reg_size : natural := 5;
 	constant c_reg_size : natural := 10;
 
 	signal a_reg_out : std_ulogic_vector(a_reg_size-1 downto 0);
-	signal c_reg_out : std_ulogic_vector(c_reg_size-1 downto 0);
+	signal c_reg_out : std_ulogic_vector(c_reg_size downto 1);
 
+	signal a_out_signal : std_ulogic;
 	signal c_out_signal : std_ulogic;
 
 begin
@@ -60,18 +71,35 @@ begin
 		output_bits => c_reg_out
 	);
 
+	-- Flip-Flop to hold a[k] stable for a clock cycle
+	output_a_k_dff: DFlipFlop
+	port map (
+		clock => clock,
+		reset => reset,
+		d => a_out_signal,
+		q => a_out
+	);
+
+	-- Flip-Flop to hold c[k] stable for a clock cycle
+	output_c_k_dff: DFlipFlop
+	port map (
+		clock => clock,
+		reset => reset,
+		d => c_out_signal,
+		q => c_out
+	);
+
+
 	proc: process (reset, a_reg_out)
 	begin
 		if (reset = '1') then
-			a_out <= '0';
+			a_out_signal <= '0';
 			c_out_signal <= '0';
 		else
 			-- Generate convolutional codes
-			a_out <= a_reg_out(0);
+			a_out_signal <= a_reg_out(0);
 			c_out_signal <= a_reg_out(0) xor a_reg_out(3) xor a_reg_out(4) xor c_reg_out(8) xor c_reg_out(10);
 		end if;
 	end process;
-
-	c_out <= c_out_signal;
 
 end beh;
