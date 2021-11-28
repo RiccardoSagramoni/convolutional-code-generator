@@ -3,17 +3,21 @@ use ieee.std_logic_1164.all;
 
 library work;
 
-entity ShiftRegister_InputBits is
+entity ShiftRegister is
+	generic (
+		size : natural := 5
+	);
+
 	port (
 		clock : in std_ulogic; -- external clock
 		reset : in std_ulogic; -- reset, asynchronous, active high
 		enable : in std_ulogic; -- enable, active high
 		input_bit : in std_ulogic;
-		output_bits : out std_ulogic_vector (2 downto 0)
+		output_bits : out std_ulogic_vector (size-1 downto 0)
 	);
 end ShiftRegister_InputBits;
 
-architecture beh of ShiftRegister_InputBits is
+architecture beh of ShiftRegister is
 
 	component DFlipFlop is
 		generic( N : natural := 8);
@@ -23,12 +27,11 @@ architecture beh of ShiftRegister_InputBits is
 			reset : in std_ulogic; -- reset, asynchronous, active high
 			enable : in std_ulogic; -- enable, active high
 			d : in std_ulogic; -- input bit
-			q : out std_ulogic -- ouput bit => a(k), a(k-3), a(k-4)
+			q : out std_ulogic -- ouput bit
 		);
 				
 	end component DFlipFlop;
 
-	constant size : positive := 5;
 	signal q_s : std_ulogic_vector (size-1 downto 0);
 
 begin
@@ -58,7 +61,7 @@ begin
 		end generate INTERNAL;
 	end generate GEN;
 
-
+	output_bits <= q_s;
 		
 
 end beh;
