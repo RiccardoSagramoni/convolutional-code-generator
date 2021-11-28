@@ -9,7 +9,6 @@ entity DFlipFlop is
 	port( 
 		clock : in std_ulogic; -- external clock
 		reset : in std_ulogic; -- reset, asynchronous, active high
-		enable : in std_ulogic; -- enable, active high
 		d : in std_ulogic; -- input bit
 		q : out std_ulogic -- ouput bit
 	);
@@ -25,9 +24,7 @@ begin
 				q <= '0';
 
 			elsif(rising_edge(clock)) then
-				if(enable = '1') then
-					q <= d;
-				end if;
+				q <= d;
 			end if;
 		end process;
    

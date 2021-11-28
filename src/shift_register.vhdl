@@ -11,11 +11,10 @@ entity ShiftRegister is
 	port (
 		clock : in std_ulogic; -- external clock
 		reset : in std_ulogic; -- reset, asynchronous, active high
-		enable : in std_ulogic; -- enable, active high
 		input_bit : in std_ulogic;
 		output_bits : out std_ulogic_vector (size-1 downto 0)
 	);
-end ShiftRegister_InputBits;
+end ShiftRegister;
 
 architecture beh of ShiftRegister is
 
@@ -25,7 +24,6 @@ architecture beh of ShiftRegister is
 		port( 
 			clock : in std_ulogic; -- external clock
 			reset : in std_ulogic; -- reset, asynchronous, active high
-			enable : in std_ulogic; -- enable, active high
 			d : in std_ulogic; -- input bit
 			q : out std_ulogic -- ouput bit
 		);
@@ -43,7 +41,6 @@ begin
 			port map (
 				clock => clock,
 				reset => reset,
-				enable => enable,
 				d => input_bit,
 				q => q_s(i)
 			);
@@ -54,7 +51,6 @@ begin
 			port map (
 				clock => clock,
 				reset => reset,
-				enable => enable,
 				d => q_s(i-1),
 				q => q_s(i)
 			);
