@@ -90,16 +90,8 @@ begin
 	);
 
 
-	proc: process (reset, a_reg_out)
-	begin
-		if (reset = '1') then
-			a_out_signal <= '0';
-			c_out_signal <= '0';
-		else
-			-- Generate convolutional codes
-			a_out_signal <= a_reg_out(0);
-			c_out_signal <= a_reg_out(0) xor a_reg_out(3) xor a_reg_out(4) xor c_reg_out(8) xor c_reg_out(10);
-		end if;
-	end process;
+	-- Generate convolutional codes
+	a_out_signal <= a_reg_out(0);
+	c_out_signal <= a_reg_out(0) xor a_reg_out(3) xor a_reg_out(4) xor c_reg_out(8) xor c_reg_out(10);
 
 end beh;
