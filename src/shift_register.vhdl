@@ -19,8 +19,6 @@ end ShiftRegister;
 architecture beh of ShiftRegister is
 
 	component DFlipFlop is
-		generic( N : natural := 8);
-			
 		port( 
 			clock : in std_ulogic; -- external clock
 			reset : in std_ulogic; -- reset, asynchronous, active high
