@@ -22,7 +22,7 @@ end convolutional_code_generator;
 
 
 -- The generator is composed by two shift register, a combinational logic 
--- that implements the c[k] relationship and two D-Flip-Flop for the output signals.
+-- that implements the c[k] relationship and one D-Flip-Flop for the input signal.
 architecture beh of convolutional_code_generator is
 	
 	-- The shift registers are used to keep in memory the previous bits
