@@ -3,10 +3,10 @@ use IEEE.std_logic_1164.all;
 
 library work;
 
-entity tb_generator_1 is
-end tb_generator_1;
+entity tb_generator_2 is
+end tb_generator_2;
 
-architecture beh of tb_generator_1 is
+architecture beh of tb_generator_2 is
 
 	constant clock_period : time := 10 ns;
 
@@ -51,12 +51,12 @@ begin
 		wait until rising_edge(clock);
 		generating <= true;
 
-		-- Test message '10101010101010101010' ('10' 10 times)
+		-- Test message '11111111111111111111' ('11' 10 times)
 		for i in 1 to 10 loop
 			a_in <= '1';
 			wait until rising_edge(clock);
 			
-			a_in <= '0';
+			a_in <= '1';
 			wait until rising_edge(clock);
 		end loop;
 
