@@ -58,6 +58,8 @@ string convolutional_code_generator (const string a_input_s)
 
 int main ()
 {
-	const string test1("10101010101010101010");
-	cout << convolutional_code_generator(test1) << endl;
+	string test;
+	cout << "? ";
+	cin >> test;
+	cout << convolutional_code_generator(test) << endl;
 }
